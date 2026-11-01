@@ -29,3 +29,16 @@ class _Logger:
 def configure_logging()->None:
     settings=get_settings()
     level=getattr(logging,settings.log_level.upper(),logging.INFO)
+    logging.basicConfig(
+        format="%(asctime)s[%(levelname)s] %(name)s: %(message)s]",
+        stream=sys.stdout,
+        level=level,
+        force=True
+
+    )
+    logging.getlogger("sqlalchemy.engine").setLevel(logging.WARNING)
+    logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("httpcore").setLevel(logging.WARNING)
+def get_logger(name:str)->_Logger:
+    return _Logger(name)
